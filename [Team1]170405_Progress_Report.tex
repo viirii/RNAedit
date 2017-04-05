@@ -1,0 +1,135 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}                             % English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}  
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx} 
+\usepackage{url}
+\usepackage[section]{placeins}
+
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+\usepackage{color}
+\usepackage{color,soul}
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}                      % No page header
+\fancyfoot[L]{}                     % Empty 
+\fancyfoot[C]{}                     % Empty
+\fancyfoot[R]{\thepage}                 % Pagenumbering
+\renewcommand{\headrulewidth}{0pt}      % Remove header underlines
+\renewcommand{\footrulewidth}{0pt}        % Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}    % Equationnumbering: section.eq#
+\numberwithin{figure}{section}      % Figurenumbering: section.fig#
+\numberwithin{table}{section}       % Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}   % Horizontal rule
+
+\title{
+    %\vspace{-1in}  
+    \usefont{OT1}{bch}{b}{n}
+    \normalfont \normalsize \textsc{Carnegie Mellon University - Computational Biology Department} \\ [25pt]
+    \today \\
+    \horrule{0.5pt} \\[0.4cm]
+    \huge Team 1 - Design Document\\
+    \horrule{2pt} \\[0.5cm]
+}
+\author{
+  Christine Baek\\
+  \normalsize\texttt{christib@andrew.cmu.edu}
+  \and
+  Kevin Chon\\
+  \normalsize\texttt{khchon@andrew.cmu.edu}
+  \and
+  Deepank Korandla\\
+  \normalsize\texttt{dkorandl@andrew.cmu.edu}
+   \and
+  Tianqi Tang\\
+  \normalsize\texttt{tianqit1@andrew.cmu.edu}
+  \date{}
+}
+\date{}
+
+
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO: } #1}}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}    % Equationnumbering: section.eq#
+\numberwithin{figure}{section}      % Figurenumbering: section.fig#
+\numberwithin{table}{section}       % Tablenumbering: section.tab#
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+\newcolumntype{C}[1]{>{\Centering}m{#1}}
+\renewcommand\tabularxcolumn[1]{C{#1}}
+
+
+
+%%% Begin document
+\begin{document}
+\maketitle
+\section{Introduction}
+In this project, we seek to build a model by applying machine learning algorithms, which takes in an RNA sequences and outputs the probability of each base or position as a site of either m1a or pseudouracil modification. 
+
+
+
+\section{Methods}
+
+Main challenge of this project is that we have to build a per-base/position predictor of whether it is likely to be a post-transcription modification, while having limited labeled data, and diverse set of inputs. 
+
+\subsection{Domain Knowledge}
+
+
+\subsection{Data}
+
+We plan to utilize known positive examples of m1a and pseudouracil for testing and building model. In addition to this, additional relevant informations ("metadata") for such sequences will be used as additional features in the learning process. 
+
+\subsubsection{Data Definition}
+\begin{itemize}
+	\item Sequence : referes to the sequencing results/reads
+	\item Metadata : Including, but not limited to :
+	\begin{itemize}
+		\item GC content (of the host organism)
+		\item GC content (of the read)
+		\item RT-stop frequency from RNA-seq
+		\item ,
+	\end{itemize}
+\end{itemize}
+
+
+\subsubsection{Data Collection}
+
+\subsubsection{Data Processing}
+
+
+
+\subsection{Learning}
+
+\subsection{Feature Selection}
+
+\subsection{Machine Learning Algorithm}
+
+\section{Milestones}
+
+\subsection{}
+
+
+\begin{thebibliography}{1}
+
+
+\end{thebibliography}
+
+
+\end{document}
