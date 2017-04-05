@@ -84,47 +84,87 @@
 In this project, we seek to build a model by applying machine learning algorithms, which takes in an RNA sequences and outputs the probability of each base or position as a site of either m1a or pseudouracil modification. 
 
 
-
 \section{Methods}
 
-Main challenge of this project is that we have to build a per-base/position predictor of whether it is likely to be a post-transcription modification, while having limited labeled data, and diverse set of inputs. 
+Main challenge of this project is that we have to build a per-base/position predictor of whether it is likely to be a post-transcription modification, while having limited labeled data, and diverse set of inputs. Instead of trying to build a model that attempts to cover all species, we will build models for specific species, and scale up from there. Overall approach is, build a multiple sequence alignment of multiple RNA reads from closely related organisms. At this point, each base (independently, or in conjunction with its neighbors) can be used as a feature
 
-\subsection{Domain Knowledge}
+\subsection{Relevant Domain Knowledge}
+
+Most important factor here is what is known about \textit{how} m1a and pseudouracil arises (ex: certain combination of sequences results in specific editing), and what impact they have on the reads. 
+More information on how these post-transcription modifications came to be is greatly helpful in processing our data, and feature engineering. 
+Each base is not independent of one another - adjacent bases, as well as far away (3D structure) may have impact on the function and potential editing of another base. It is known that at least for RNA editing (during-transcription RNA modification), there is bias for certain types of substitution. For simplicity, we will initially build our model by considering only direct neighbor bases for each position, but potentially expanding and taking further neighbors into consideration.
 
 
 \subsection{Data}
 
-We plan to utilize known positive examples of m1a and pseudouracil for testing and building model. In addition to this, additional relevant informations ("metadata") for such sequences will be used as additional features in the learning process. 
+We plan to utilize known positive examples of m1a and pseudouracil for testing and building model. In addition to this, additional relevant informations ("\textit{metadata}") for such sequences will be used as additional features in the learning process. 
 
 \subsubsection{Data Definition}
 \begin{itemize}
-	\item Sequence : referes to the sequencing results/reads
-	\item Metadata : Including, but not limited to :
+	\item Sequence : refers to the sequencing results/reads
+	\item \textit{metadata} : Non-sequence data, including, but not limited to :
 	\begin{itemize}
 		\item GC content (of the host organism)
 		\item GC content (of the read)
 		\item RT-stop frequency from RNA-seq
-		\item ,
+		\item sequence motif
 	\end{itemize}
 \end{itemize}
 
 
 \subsubsection{Data Collection}
 
-\subsubsection{Data Processing}
+\begin{enumerate}
+	\item choose few species that are well-represented in terms of labeled m1a/pseudouracil RNA sequencing reads based on tRNAdb and MODOMICS databases
+	\item download population SNP data for chosen species
+\end{enumerate}
 
+\subsubsection{Data Processing}
+Perform multiple sequence alignment on the collected RNA sequence reads with various SNPs
+	
 
 
 \subsection{Learning}
 
-\subsection{Feature Selection}
+\subsection{Feature Selection \& Engineering}
+
+Given the multiple sequence alignment of RNA reads of closely related species, features can be built by outputting various subsequence of each base and its neighboring base as it is not yet known how much and which neighboring bases have an impact on post-transcription RNA modification, if any. This will be used in addition to the various \textit{metadata}, as defined earlier. 
+
 
 \subsection{Machine Learning Algorithm}
+Given that most of our features are discrete rather than continuous, decisions tree/random forest would be a fast and potentially robust algorithm to apply to this problem. Another potential algorithm to explore is logistic regression. Use cross-validation for measuring performance of algorithm. Utilize python/numpy/scikit-learn for learning once appropriate algorithm is decided on. 
 
 \section{Milestones}
 
-\subsection{}
+\subsection{Week 1 - April 5th, 2017}
+\begin{itemize}
+	\item Design a overview of the project
+	\item Define how and which data to collect
+	\item Decide on learning algorithms
+\end{itemize}
 
+\subsection{Week 2 - April 12th, 2017}
+\begin{itemize}
+	\item Collect data, process, feature engineer and build model with \textit{one} chosen species, with few specific genes
+	\item Continue collecting data for other species as well
+	\item Experiment with various approaches to feature selection/engineering and determine which ones are most useful for learning
+\end{itemize}
+
+
+\subsection{Week 3 - April 19th, 2017}
+Week of mini demo
+\begin{itemize}
+	\item Demo using one or two species 
+	\item Finish processing/engineering and model building with the remainder of species
+\end{itemize}
+
+
+\subsection{Week 4 - April 24th, 2017}
+Deliver solution and manuals
+\begin{itemize}
+	\item Attempt to combine the independently built models, for a more generalizable predictor of RNA modification
+	\item Clean up code and documentation
+\end{itemize}
 
 \begin{thebibliography}{1}
 
