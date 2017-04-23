@@ -192,33 +192,33 @@ def main():
     labels = gen_label(sequences)
     data = gen_data(sequences, 19, 0, aligned='no')
 
-    # scores = []
-    # for window_sz in range(3, 31, 2):
-    #     data = gen_data(sequences, window_sz, 0, aligned='no')
-    #     scores.append(test_with_svm(data, labels, 10))
-    #
-    # fig, ax = plt.subplots()
-    # ax.plot(np.arange(3, 31, 2), scores)
-    # plt.show()
+    scores = []
+    for window_sz in range(3, 41, 2):
+        data = gen_data(sequences, window_sz, 0, aligned='no')
+        scores.append(test_with_svm(data, labels, 10))
+
+    fig, ax = plt.subplots()
+    ax.plot(np.arange(3, 41, 2), scores)
+    plt.show()
     #store_full_classifier(data, labels)
 
     # Get sequences using Christine's script
-    filename = '21.txt'
-    sequences, labels_1 = cb21.middleU(filename)
-
-    data_1 = np.zeros((len(sequences)*3, 19))
-    labels_1 = np.zeros(len(sequences)*3)
-    labels_1[0:len(sequences)] = 1
-    for i in range(len(sequences)):
-        data_1[i, :] = nuc_to_label(sequences[i][0:19])
-        data_1[len(sequences)+i, :] = nuc_to_label(sequences[i][1:20])
-        data_1[len(sequences)*2+i, :] = nuc_to_label(sequences[i][2:])
+    # filename = '21.txt'
+    # sequences, labels_1 = cb21.middleU(filename)
+    #
+    # data_1 = np.zeros((len(sequences)*3, 19))
+    # labels_1 = np.zeros(len(sequences)*3)
+    # labels_1[0:len(sequences)] = 1
+    # for i in range(len(sequences)):
+    #     data_1[i, :] = nuc_to_label(sequences[i][0:19])
+    #     data_1[len(sequences)+i, :] = nuc_to_label(sequences[i][1:20])
+    #     data_1[len(sequences)*2+i, :] = nuc_to_label(sequences[i][2:])
 
     #print(test_with_svm(data_1, labels_1, 10))
-    
-    clf = train_with_svm(data, labels_1)
-    #Y_test = clf.predict(data_1)
-    #print(clf.score(data_1, labels_1))
+
+    # clf = train_with_svm(data, labels)
+    # Y_test = clf.predict(data_1)
+    # print(clf.score(data_1, labels_1))
 
     # for window_sz in range(3, 15, 2):
     #     data = gen_data(sequences, window_sz, 0)
