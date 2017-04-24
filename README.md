@@ -19,8 +19,11 @@ Team Members : Christine Baek, Kevin Chon, Deepank Korandla, Tianqi Tang
 Below are command for package installation for MacOS 
 
 `pip install -U scikit-learn`
+
 `pip install numpy`
+
 `pip install scipy`
+
 `pip install biopython`
 
 
