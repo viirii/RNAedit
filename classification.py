@@ -17,7 +17,10 @@ import cb21
 from sklearn.svm import SVC
 from sklearn.externals import joblib
 from sklearn.model_selection import cross_val_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 import matplotlib.pyplot as plt
+import RNA
 
 
 def readfile(filename, format):
@@ -33,7 +36,7 @@ def nuc_to_label(sequence):
             label[i] = 0
         elif sequence[i] == 'A':
             label[i] = 1
-        elif sequence[i] == 'T':
+        elif sequence[i] == 'U':
             label[i] = 2
         elif sequence[i] == 'C':
             label[i] = 3
@@ -61,7 +64,7 @@ def gen_label(sequences):
     return label
 
 
-def gen_window(data, window_sz, aligned='yes', length=''):
+def gen_window(data, window_sz, aligned='yes', length=[]):
     # Generate sliding window for aligned data
     if aligned == 'yes':
         window = np.zeros((data.shape[0] * data.shape[1], window_sz))
@@ -158,9 +161,9 @@ def score_helper(clf, X, Y):
     return f1
 
 
-def test_with_svm(X, Y, fold):
+def test_with_svm(X, Y, fold, scoring='f1_weighted'):
     clf = SVC(class_weight='balanced')
-    scores = cross_val_score(clf, X, y=Y, scoring='accuracy', cv=fold, n_jobs=-1)
+    scores = cross_val_score(clf, X, y=Y, scoring=scoring, cv=fold, n_jobs=-1)
     return np.average(scores)
 
 
@@ -170,55 +173,94 @@ def store_full_classifier(X, Y):
     joblib.dump(clf, 'trained_model')
 
 
+def rna_fold(sequences, filename):
+    structure_label = np.zeros(len(''.join(sequences)))
+    counter = 0
+    for sequence in sequences:
+        structure, mfe = RNA.fold(sequence.replace('Y', 'U'))
+        for nuc in structure:
+            if nuc == '(':
+                structure_label[counter] = 1
+            elif nuc == ')':
+                structure_label[counter] = 2
+            counter += 1
+    np.save(filename, structure_label)
+
+
 def main():
-    # Read in *.aln file
-
-    # filename = 'STEP4_TrimmedNT.aln'
-    # fmt = 'clustal'
-
-    # alignment = readfile(filename, fmt)
-    # sequences = []
-    # for record in alignment:
-    #     sequences.append(record.seq)
-
     # Read *.mfa file
+
+    # Tag: 0: 1 on 1; 1: 2 on 2; 2: 2 on 1; 3: 1/2 on 1/2
+    tag = 0
+
+    calc_fold = 0
 
     filename = '28sRRNA_18sRRNA_Y.mfa'
     fmt = 'fasta'
 
     sequences = []
     for record in SeqIO.parse(filename, fmt):
-        sequences.append(str(record.seq))
+        sequences.append(str(record.seq).replace('T', 'U'))
     labels = gen_label(sequences)
     data = gen_data(sequences, 19, 0, aligned='no')
 
-    scores = []
-    for window_sz in range(3, 41, 2):
-        data = gen_data(sequences, window_sz, 0, aligned='no')
-        scores.append(test_with_svm(data, labels, 10))
+    if calc_fold == 1:
+        rna_fold(sequences, 'rna_fold_2')
+    else:
+        fold = np.load('rna_fold_2.npy')
 
-    fig, ax = plt.subplots()
-    ax.plot(np.arange(3, 41, 2), scores)
-    plt.show()
+    data = np.concatenate((data, np.matrix(fold).T), axis=1)
+
+    if tag == 1:
+        scores = []
+        for window_sz in range(3, 41, 2):
+            data = gen_data(sequences, window_sz, 0, aligned='no')
+            scores.append(test_with_svm(data, labels, 10, scoring='f1_weighted'))
+
+        np.savetxt('out.txt', np.matrix(scores).T)
+
+    # fig, ax = plt.subplots()
+    # ax.plot(np.arange(3, 41, 2), scores)
+    # plt.show()
     #store_full_classifier(data, labels)
 
     # Get sequences using Christine's script
-    # filename = '21.txt'
-    # sequences, labels_1 = cb21.middleU(filename)
-    #
-    # data_1 = np.zeros((len(sequences)*3, 19))
-    # labels_1 = np.zeros(len(sequences)*3)
-    # labels_1[0:len(sequences)] = 1
-    # for i in range(len(sequences)):
-    #     data_1[i, :] = nuc_to_label(sequences[i][0:19])
-    #     data_1[len(sequences)+i, :] = nuc_to_label(sequences[i][1:20])
-    #     data_1[len(sequences)*2+i, :] = nuc_to_label(sequences[i][2:])
+    filename = '21.txt'
+    sequences, labels_1 = cb21.middleU(filename)
 
-    #print(test_with_svm(data_1, labels_1, 10))
+    if calc_fold == 1:
+        rna_fold(sequences, 'rna_fold_1.npy')
 
-    # clf = train_with_svm(data, labels)
-    # Y_test = clf.predict(data_1)
-    # print(clf.score(data_1, labels_1))
+    data_1 = np.zeros((len(sequences)*3, 19))
+    labels_1 = np.zeros(len(sequences)*3)
+    labels_1[0:len(sequences)] = 1
+    for i in range(len(sequences)):
+        data_1[i, :] = nuc_to_label(sequences[i][0:19])
+        data_1[len(sequences)+i, :] = nuc_to_label(sequences[i][1:20])
+        data_1[len(sequences)*2+i, :] = nuc_to_label(sequences[i][2:])
+
+    if tag == 0:
+        print('1 on 1 f_1 weighted:', test_with_svm(data_1, labels_1, 10, scoring='f1_weighted'))
+        print('1 on 1 precision weighted:', test_with_svm(data_1, labels_1, 10, scoring='precision_weighted'))
+        print('1 on 1 recall weighted:', test_with_svm(data_1, labels_1, 10, scoring='recall_weighted'))
+
+    # 1/2 on 1/2
+    if tag == 2:
+        data = np.concatenate((data, data_1), axis=0)
+        labels = np.concatenate((labels, labels_1))
+        print('1/2 on 1/2 f_1 weighted:', test_with_svm(data, labels, 10, scoring='f1_weighted'))
+        print('1/2 on 1/2 precision weighted:', test_with_svm(data, labels, 10, scoring='precision_weighted'))
+        print('1/2 on 1/2 recall weighted:', test_with_svm(data, labels, 10, scoring='recall_weighted'))
+
+        store_full_classifier(data, labels)
+
+    if tag == 3:
+        clf = train_with_svm(data, labels)
+        Y_test = clf.predict(data_1)
+        print(clf.score(data_1, labels_1))
+        print('1 on 1 f_1 weighted:', f1_score(labels_1, clf.predict(data_1), average='weighted'))
+        print('2 on 1 precision weighted:', precision_score(labels_1, clf.predict(data_1), average='weighted'))
+        print('2 on 1 recall weighted:', recall_score(labels_1, clf.predict(data_1), average='weighted'))
 
     # for window_sz in range(3, 15, 2):
     #     data = gen_data(sequences, window_sz, 0)
