@@ -1,4 +1,4 @@
-# Predicting Pseudouridylation of Individual RNA Bases Using Machine Learning#
+# Predicting Pseudouridylation of Individual RNA Bases Using Machine Learning
 2017 Spring Bioinformatics Practicum @ CMU
 
 Team Members : Christine Baek, Kevin Chon, Deepank Korandla, Tianqi Tang
@@ -23,7 +23,7 @@ Below are some sample commands that can be used
 
 - `python test.py {inputfilepath} {fileformat}`
 - `python test.py seq.fasta fasta`
-- `python test.py seq.mfa fasta``
+- `python test.py seq.mfa fasta`
 
 
 
