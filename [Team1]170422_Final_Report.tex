@@ -1,0 +1,204 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage{cite}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}                             % English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}  
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx} 
+\usepackage{url}
+\usepackage[section]{placeins}
+
+%%% Unicode character declaration
+
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+\usepackage{color}
+\usepackage{color,soul}
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}                      % No page header
+\fancyfoot[L]{}                     % Empty 
+\fancyfoot[C]{}                     % Empty
+\fancyfoot[R]{\thepage}                 % Pagenumbering
+\renewcommand{\headrulewidth}{0pt}      % Remove header underlines
+\renewcommand{\footrulewidth}{0pt}        % Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}    % Equationnumbering: section.eq#
+\numberwithin{figure}{section}      % Figurenumbering: section.fig#
+\numberwithin{table}{section}       % Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}   % Horizontal rule
+
+\title{
+    %\vspace{-1in}  
+    \usefont{OT1}{bch}{b}{n}
+    \normalfont \normalsize \textsc{Carnegie Mellon University - Computational Biology Department} \\ [25pt]
+    \today \\
+    \horrule{0.5pt} \\[0.4cm]
+    \huge Predicting Pseudouridylation of Individual RNA Bases Using Machine Learning\\
+    \horrule{2pt} \\[0.5cm]
+}
+\author{
+  Christine Baek\\
+  \normalsize\texttt{christib@andrew.cmu.edu}
+  \and
+  Kevin Chon\\
+  \normalsize\texttt{khchon@andrew.cmu.edu}
+  \and
+  Deepank Korandla\\
+  \normalsize\texttt{dkorandl@andrew.cmu.edu}
+   \and
+  Tianqi Tang\\
+  \normalsize\texttt{tianqit1@andrew.cmu.edu}
+  \date{}
+}
+\date{}
+
+
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{TODO: } #1}}
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}    % Equationnumbering: section.eq#
+\numberwithin{figure}{section}      % Figurenumbering: section.fig#
+\numberwithin{table}{section}       % Tablenumbering: section.tab#
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+\newcolumntype{C}[1]{>{\Centering}m{#1}}
+\renewcommand\tabularxcolumn[1]{C{#1}}
+
+
+
+%%% Begin document
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\TODO{CHRISTINE abstract here. CB will complete this section after all other sections are written}
+\end{abstract}
+
+
+\section{Introduction}
+
+\TODO{DEEPANK. 3 sections minimum covering 1) RNA modification - what is it, biological significance. 2) PseudoUracil - what is it, maybe include figure of pseudouracil 3) What has been done with PseudoUracil research. DO NOT FORGET TO CITE.}
+
+example for Deepank : 
+
+This is how you cite stuff ~\cite{schwartz}.
+
+
+
+%%% Methods
+
+\section{Methods}
+
+
+\TODO{CHRISTINE - brief overview}
+Main challenge of this project is that we have to build a per-base/position predictor of whether it is likely to be a post-transcription modification, while having limited labeled data, and diverse set of inputs. Instead of trying to build a model that attempts to cover all species, we will build models for specific species, and scale up from there. Overall approach is, build a multiple sequence alignment of multiple RNA reads from closely related organisms. At this point, each base (independently, or in conjunction with its neighbors) can be used as a feature
+
+\subsection{Relevant Domain Knowledge}
+
+\TODO{CHRISTINE - overall view of why we picked certain stuff, and logic for our design}
+
+
+\subsection{Data}
+
+
+
+\subsubsection{Data Collection}
+
+3 types of data
+
+\TODO{CHRISTINE}
+
+\begin{enumerate}
+	\item human chromosome rRNA (insert citation)
+	\item human rRNA (insert citation)
+	\item non-human rRNA (insert citation)
+\end{enumerate}
+
+\subsubsection{Data Processing}
+
+\TODO{CHRISTINE : obtaining the actual data, modifying it}
+
+\subsection{Feature Selection \& Engineering}
+
+\TODO{CHRISTINE :  GC content, sliding window}
+
+\TODO{TIANQI : discuss stuff like vienna/RNA fold}
+
+\subsection{Machine Learning Algorithm}
+
+\TODO{CHRISTINE : Brief intro of using two learning strategies}
+
+\subsubsection{SVM - TIANQI feel free to modify the section title}
+
+\TODO{TIANQI - talk about why you picked SVM, what SVM is, and some settings you may be using and why.}
+
+\subsubsection{Random Forest - KEVIN feel free to modify the section title}
+
+\TODO{KEVIN - talk about why you picked SVM, what SVM is, and some settings you may be using and why.}
+
+%%% Results
+
+\section{Results}
+
+\subsection{SVM Results}
+
+\TODO{TIANQI - discuss the results, and provide the table of performances where columns are input data type, and rows are various parameters used. Please use some form of heat map for the resulting table. I recommend matlab. Kevin \& Tianqi - talk to each other so that the two tables look simliar (colorscheme, format, etc.) for uniformity}
+
+\subsection{Random Forest Results}
+
+\TODO{KEVIN - discuss the results, and provide the table of performances where columns are input data type, and rows are various parameters used. Please use some form of heat map for the resulting table. I recommend matlab. Kevin \& Tianqi - talk to each other so that the two tables look simliar (colorscheme, format, etc.) for uniformity}
+
+
+
+
+%%% Conclusion
+
+\section{Conclusion}
+
+\TODO{CHRISTINE - done after all other sections are filled out}
+
+
+
+%%% Bibliography
+
+
+\begin{thebibliography}{1}
+
+% use the following format for each new citation. Items that need to be modified are capitalized
+\bibitem{example}
+AUTHOR1, AUTHOR2, et al.
+\hskip 1em plus 0.5em minus 0.4em\relax 
+\emph{TITLE}  
+\hskip 1em plus 0.5em minus 0.4em\relax 
+http://LINK, 
+DATE OF PUBLICATION
+
+
+
+\bibitem{schwartz}
+Schraga Schwartz and Douglas A. Bernstein and Maxwell R. Mumbach and Marko Jovanovic and Rebecca H. Herbst and Brian X. Leon-Ricardo and Jesse M. Engreitz and Mitchell Guttman and Rahul Satija and Eric S. Lander and Gerald Fink and Aviv Regev
+\hskip 1em plus 0.5em minus 0.4em\relax 
+\emph{Transcriptome-wide Mapping Reveals Widespread Dynamic-Regulated Pseudouridylation of ncRNA and mRNA}  
+\hskip 1em plus 0.5em minus 0.4em\relax 
+http://doi.org/10.1016/j.cell.2014.08.028, 
+2014
+
+\end{thebibliography}
+
+\end{document}

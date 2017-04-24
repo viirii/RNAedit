@@ -20,7 +20,7 @@ def middleU(filepath):
     for elem in read.split():
         result.append(elem[:10] + pseudoU + elem[11:])
 
-    ulabel = [0 for x in range(10)] + [1] + [0 for x in range(10)]
+    ulabel = [0 for x in range(9)] + [1] + [0 for x in range(11)]
     for i in range(len(read.split())):
         labels.append(ulabel)
 
