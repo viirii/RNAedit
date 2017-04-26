@@ -8,7 +8,7 @@ from sklearn.externals import joblib
 import sys
 import os
 from Bio import SeqIO
-import classification
+import helper
 import numpy as np
 
 
@@ -29,8 +29,8 @@ if __name__ == '__main__':
     #sequences = []
     for record in SeqIO.parse(filename, file_format):
         sequences = [str(record.seq)]
-        labels = classification.gen_label(sequences)
-        data = classification.gen_data(sequences, 19, 0, aligned='no')
+        labels = helper.gen_label(sequences)
+        data = helper.gen_data(sequences, 19, 0, aligned='no')
         predicted_label = classifier.predict(data)
         sequence = sequences[0]
         #np.savetxt('./result/'+record.id, predicted_label, fmt='%d')
