@@ -11,6 +11,22 @@ Team Members : Christine Baek, Kevin Chon, Deepank Korandla, Tianqi Tang
 
 - Python 2 or 3
 - Scikit Learn
+- bioPython
+- numpPy
+- scipPy
+
+
+Below are command for package installation for MacOS 
+
+`pip install -U scikit-learn`
+
+`pip install numpy`
+
+`pip install scipy`
+
+`pip install biopython`
+
+
 
 ### Input & Output 
 
@@ -21,9 +37,9 @@ Team Members : Christine Baek, Kevin Chon, Deepank Korandla, Tianqi Tang
 
 Below are some sample commands that can be used
 
-- `python test.py {inputfilepath} {fileformat}`
-- `python test.py seq.fasta fasta`
-- `python test.py seq.mfa fasta`
+- `python pseudoUprediction.py {inputfilepath} {fileformat}`
+- `python pseudoUprediction.py sample.fasta fasta`
+- `python pseudoUprediction.py sample.mfa fasta`
 
 
 
