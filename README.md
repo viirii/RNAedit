@@ -7,14 +7,7 @@ Team Members : Christine Baek, Kevin Chon, Deepank Korandla, Tianqi Tang
 
 ## Introduction
 
-This program predicts the location of pseduouridines in the given nucleotide
-sequences using the support vector machine model. This model was trained on
-human rRNA and mRNA sequences. The program takes in either single or multiple
-nucleotide sequences and then outputs the probability each position is a
-pseduouridine or not, the positions of the predicted pseudouridines, and/or the
-sequences annotated with pseduouridines. The user can specify which of the three
-output types they want, and the output data is printed to separate files based
-on output type (instead of a single file for each sequence).
+This program predicts the location of pseduouridines in the given nucleotide sequences using the support vector machine model (SVM). This model was trained on human rRNA and mRNA sequences and uses boundary-based decision-making. The program takes in either single or multiple nucleotide sequences and then outputs a single file containing all the sequences such that all the positions predicted to be pseduouridine are updated accordingly. The user  has the option of asking the program to output a file listing the probabilities that each position in each sequence will either be pseudouridylated or not. Additionally, the user can ask the program to output a file listing the positions of the predicted pseudouridines in each sequence. For the second option, the user can also specify a threshold such that only those positions with a probability greater than the threshold are predicted to be pseudouridines. It should be noted that probability-based prediction is not reliable due to the nature of the SVM.
 
 
 
@@ -44,19 +37,23 @@ Below are command for package installation for MacOS
 ### Input & Output
 
 - Input : Standard bioinformatics file format such as `.fasta` or `.mfa` that contains your input sequence (DNA or RNA). For a full list of acceptable input file formats, please visit http://biopython.org/wiki/SeqIO
-  * Command line argument for `.fasta` or `.mfa`: `fasta`
-- Output : There are three possible output types. Only one file is used for each output type; separation by sequence occurs within the file. The files will be located in the `results` directory. The user can specify which of the three output types they would like through the command line (more than one can be selected).
+  * File format command line argument for `.fasta` or `.mfa` files: `fasta`
+- Output : The program will always output a text file containing each updated sequence such that the positions predicted to be pseudouridine are marked with the character `Y` (instead of a T or a U). The user can also use command line arguments to ask for two additional text files to be outputted (one or both can be selected). All files will be located in the `results` directory, and separation by sequence occurs within each file.
   1. Positional Probability: For each position in each sequence, the program will list the probability that position is a pseudouridine (first probability column) or not a pseudouridine (second probability column).
-    * Command line argument: `prob`
-  2. Pseudouridine positions: For each sequence, the program will list the positions of predicted pseudouridines (one-indexing).
-    * Command line argument: `pos`
-  3. Annotated sequences: The program will output a text file containing the updated sequences, with predictions for each position, for all sequences. Each base predicted to be pseudouridine will be marked with the character `Y`.
-    * Command line argument: `annotate`
+    * Command line argument: `-p`
+  2. Pseudouridine positions: For each sequence, the program will list the positions of predicted pseudouridines.
+    * Command line argument: `-s`
+    * The user can also specify the threshold at which to call a particular position a pseudouridine.
+        * Command line argument: `-t <floating point number>`
+        * The `-s` argument will be ignored if the `-t` argument is present.
 
 ### Sample Commands
 
 Below are some sample commands that can be used
 
-- `python pseudoUprediction.py {inputfilepath} {fileformat} {output types}`
+- `python pseudoUprediction.py {output commands} {inputfilepath} {fileformat} `
 - `python pseudoUprediction.py sample.fasta fasta`
-- `python pseudoUprediction.py sample.mfa fasta`
+- `python pseudoUprediction.py -p sample.mfa fasta`
+- `python pseudoUprediction.py -s sample.mfa fasta`
+- `python pseudoUprediction.py -t 0.9 sample.mfa fasta`
+- `python pseudoUprediction.py -p -s -t 0.9 sample.mfa fasta`
