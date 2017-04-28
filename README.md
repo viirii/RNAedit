@@ -14,25 +14,7 @@ This program predicts the location of pseduouridines in the given nucleotide seq
 ## How to Use
 
 ### Dependencies and Installation
-
-- Python 2 or 3
-- Scikit Learn
-- bioPython
-- numpPy
-- scipPy
-
-
-Below are command for package installation for MacOS
-
-`pip install -U scikit-learn`
-
-`pip install numpy`
-
-`pip install scipy`
-
-`pip install biopython`
-
-
+For mac users, no dependencies need to be installed. Simply execute the binary through the command line and enter in the appropriate arguments as described below.
 
 ### Input & Output
 
@@ -51,9 +33,9 @@ Below are command for package installation for MacOS
 
 Below are some sample commands that can be used
 
-- `python pseudoUprediction.py {output commands} {inputfilepath} {fileformat} `
-- `python pseudoUprediction.py sample.fasta fasta`
-- `python pseudoUprediction.py -p sample.mfa fasta`
-- `python pseudoUprediction.py -s sample.mfa fasta`
-- `python pseudoUprediction.py -t 0.9 sample.mfa fasta`
-- `python pseudoUprediction.py -p -s -t 0.9 sample.mfa fasta`
+- `./pseudoUprediction {output commands} {inputfilepath} {fileformat} `
+- `./pseudoUprediction sample.fasta fasta`
+- `./pseudoUprediction -p sample.mfa fasta`
+- `./pseudoUprediction -s sample.mfa fasta`
+- `./pseudoUprediction -t 0.9 sample.mfa fasta`
+- `./pseudoUprediction -p -s -t 0.9 sample.mfa fasta`
