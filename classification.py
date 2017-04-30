@@ -19,8 +19,9 @@ from sklearn.externals import joblib
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
+from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
-import RNA
+#import RNA
 
 
 def readfile(filename, format):
@@ -147,10 +148,14 @@ def gen_fold(X, Y, fold):
 
     return X_fold, Y_fold
 
-
 def train_with_svm(X, Y):
     clf = SVC(class_weight='balanced')
     clf.fit(X, Y)
+    return clf
+
+def train_with_random_forest(X, Y): 
+    clf = RandomForestClassifier(class_weight='balanced')
+    clf.fit(X , Y)
     return clf
 
 def score_helper(clf, X, Y):
@@ -160,12 +165,15 @@ def score_helper(clf, X, Y):
     print(cnf_matrix)
     return f1
 
-
 def test_with_svm(X, Y, fold, scoring='f1_weighted'):
     clf = SVC(class_weight='balanced')
     scores = cross_val_score(clf, X, y=Y, scoring=scoring, cv=fold, n_jobs=-1)
     return np.average(scores)
 
+def test_with_random_forest(X, Y, fold, scoring='f1_weighted'):
+    clf = RandomForestClassifier(class_weight='balanced')
+    scores = cross_val_score(clf, X,y=Y, scoring=scoring, cv=fold, n_jobs=-1)
+    return np.average(scores)
 
 def store_full_classifier(X, Y):
     clf = SVC(class_weight='balanced')
@@ -190,8 +198,9 @@ def rna_fold(sequences, filename):
 def main():
     # Read *.mfa file
 
-    # Tag: 0: 1 on 1; 1: 2 on 2; 2: 2 on 1; 3: 1/2 on 1/2
-    tag = 0
+    # Tag: 0: 1 on 1; 1: 2 on 2; 2: 1/2 on 1/2; 3: 2 on 1- SVM
+    # Tag: 4: 1 on 1; 5: 2 on 2; 6: 1/2 on 1/2, 7: 2 on 1 - Random Forest
+    tag = 7
 
     calc_fold = 0
 
@@ -204,12 +213,15 @@ def main():
     labels = gen_label(sequences)
     data = gen_data(sequences, 19, 0, aligned='no')
 
+    '''
     if calc_fold == 1:
         rna_fold(sequences, 'rna_fold_2')
     else:
         fold = np.load('rna_fold_2.npy')
 
     data = np.concatenate((data, np.matrix(fold).T), axis=1)
+
+    '''
 
     if tag == 1:
         scores = []
@@ -218,6 +230,14 @@ def main():
             scores.append(test_with_svm(data, labels, 10, scoring='f1_weighted'))
 
         np.savetxt('out.txt', np.matrix(scores).T)
+
+    if tag == 5:
+        scores = []
+        for window_sz in range(3, 41, 2):
+            data = gen_data(sequences, window_sz, 0, aligned='no')
+            scores.append(test_with_random_forest(data, labels, 10, scoring='structure_weighted'))
+
+        np.savetxt('outRF.txt', np.matrix(scores).T)
 
     # fig, ax = plt.subplots()
     # ax.plot(np.arange(3, 41, 2), scores)
@@ -258,7 +278,30 @@ def main():
         clf = train_with_svm(data, labels)
         Y_test = clf.predict(data_1)
         print(clf.score(data_1, labels_1))
-        print('1 on 1 f_1 weighted:', f1_score(labels_1, clf.predict(data_1), average='weighted'))
+        print('2 on 1 f_1 weighted:', f1_score(labels_1, clf.predict(data_1), average='weighted'))
+        print('2 on 1 precision weighted:', precision_score(labels_1, clf.predict(data_1), average='weighted'))
+        print('2 on 1 recall weighted:', recall_score(labels_1, clf.predict(data_1), average='weighted'))
+
+    if tag == 4:
+        print('1 on 1 f_1 weighted:', test_with_random_forest(data_1, labels_1, 10, scoring='f1_weighted'))
+        print('1 on 1 precision weighted:', test_with_random_forest(data_1, labels_1, 10, scoring='precision_weighted'))
+        print('1 on 1 recall weighted:', test_with_random_forest(data_1, labels_1, 10, scoring='recall_weighted'))
+
+    # 1/2 on 1/2
+    if tag == 6:
+        data = np.concatenate((data, data_1), axis=0)
+        labels = np.concatenate((labels, labels_1))
+        print('1/2 on 1/2 f_1 weighted:', test_with_random_forest(data, labels, 10, scoring='f1_weighted'))
+        print('1/2 on 1/2 precision weighted:', test_with_random_forest(data, labels, 10, scoring='precision_weighted'))
+        print('1/2 on 1/2 recall weighted:', test_with_random_forest(data, labels, 10, scoring='recall_weighted'))
+
+        store_full_classifier(data, labels)
+
+    if tag == 7:
+        clf = train_with_random_forest(data, labels)
+        Y_test = clf.predict(data_1)
+        print(clf.score(data_1, labels_1))
+        print('2 on 1 f_1 weighted:', f1_score(labels_1, clf.predict(data_1), average='weighted'))
         print('2 on 1 precision weighted:', precision_score(labels_1, clf.predict(data_1), average='weighted'))
         print('2 on 1 recall weighted:', recall_score(labels_1, clf.predict(data_1), average='weighted'))
 
