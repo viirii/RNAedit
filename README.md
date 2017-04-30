@@ -14,9 +14,9 @@ This program predicts the location of pseduouridines in the given nucleotide seq
 ## How to Use
 
 ### Installing & Running the Program
-For Mac users, download `pseudoUprediction.zip` from the *Mac* section of the releases tab and extract the files to the same folder. Execute the binary through the command line, entering in the appropriate arguments as described below.
+For Mac and Linux users, download `pseudoUprediction.zip` from the respective *Mac* or *Linux* section of the releases tab and extract the files to the same folder. Execute the binary through the command line, entering in the appropriate arguments as described below.
 
-For Windows users,  download `pseudoUprediction.zip` from the *Windows* section of the releases tab and extract the files to the same folder. Run the executable file through the command line, entering in the appropriate arguments as described below.
+For Windows users, download `pseudoUprediction.zip` from the *Windows* section of the releases tab and extract the files to the same folder. Run the executable file through the command line, entering in the appropriate arguments as described below.
 
 ### Input & Output
 
@@ -34,11 +34,11 @@ For Windows users,  download `pseudoUprediction.zip` from the *Windows* section 
 
 ### Command Line Format
 
-*Mac*
-`./pseudoUprediction {output commands} {inputfilepath} {fileformat} `
+*Mac* and *Linux*   
+`./pseudoUprediction {output commands} {inputfilepath} {fileformat}`
 
-*Windows*
-`pseudoUprediction.exe {output commands} {inputfilepath} {fileformat} `
+*Windows*   
+`pseudoUprediction.exe {output commands} {inputfilepath} {fileformat}`
 
 ### Sample Commands
 
