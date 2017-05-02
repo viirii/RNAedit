@@ -18,12 +18,11 @@ For Mac and Linux users, download `pseudoUprediction.zip` from the respective *M
 
 For Windows users, download `pseudoUprediction.zip` from the *Windows* section of the releases tab and extract the files to the same folder. Run the executable file through the command line, entering in the appropriate arguments as described below.
 
-Note: Input files should be moved into the folder containing the executable / binary file before running.
-
 ### Input & Output
 
 - Input : Standard bioinformatics file format such as `.fasta` or `.mfa` that contains your input sequence (DNA or RNA). For a full list of acceptable input file formats, please visit http://biopython.org/wiki/SeqIO
   * File format command line argument for `.fasta` or `.mfa` files: `fasta`
+  * Note: Any input files should be moved into the folder containing the executable / binary file before running.
 
 - Output : The program will always output a text file containing each updated sequence such that the positions predicted to be pseudouridine are marked with the character `Y` (instead of a T or a U). The user can also use command line arguments to ask for two additional text files to be outputted (one or both can be selected). All files will be located in the `results` directory, and separation by sequence occurs within each file.
   1. Positional Probability: For each position in each sequence, the program will list the probability that position is a pseudouridine (first probability column) or not a pseudouridine (second probability column).
