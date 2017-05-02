@@ -18,6 +18,8 @@ For Mac and Linux users, download `pseudoUprediction.zip` from the respective *M
 
 For Windows users, download `pseudoUprediction.zip` from the *Windows* section of the releases tab and extract the files to the same folder. Run the executable file through the command line, entering in the appropriate arguments as described below.
 
+Note: Input files should be moved into the folder containing the executable / binary file before running.
+
 ### Input & Output
 
 - Input : Standard bioinformatics file format such as `.fasta` or `.mfa` that contains your input sequence (DNA or RNA). For a full list of acceptable input file formats, please visit http://biopython.org/wiki/SeqIO
